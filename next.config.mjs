@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ['@prisma/client', '@prisma/engines'],
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', '@prisma/engines'],
-  },
-  serverActions: {
-    bodySizeLimit: '2mb',
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
 };
 
