@@ -11,18 +11,28 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function MobileNavbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const profileSlug = user?.username ?? user?.emailAddresses?.[0]?.emailAddress.split("@")[0];
   const profileHref = profileSlug ? `/profile/${profileSlug}` : "/";
+
+  useEffect(() => {
+    if (!showMobileMenu) return;
+
+    router.prefetch("/");
+    router.prefetch("/notifications");
+    if (profileSlug) router.prefetch(`/profile/${profileSlug}`);
+  }, [profileSlug, router, showMobileMenu]);
 
   return (
     <div className="flex md:hidden items-center space-x-2">
